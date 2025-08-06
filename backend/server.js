@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const postRoutes = require('./routes/post');
+app.use('/api/posts', postRoutes);
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB'))
   .catch(err => console.error('❌ Error en MongoDB:', err));

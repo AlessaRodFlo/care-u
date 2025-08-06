@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ← AÑADIDO
 import { loginUser } from '../services/auth';
 import logo from '../assets/logo.png';
 
@@ -7,6 +8,8 @@ export default function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // ← AÑADIDO
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,6 +25,11 @@ export default function Login() {
       const data = await loginUser(form.email, form.password);
       localStorage.setItem('token', data.token);
       setSuccess(`Bienvenido ${data.user.name}`);
+
+      // ← Redireccionar después de éxito
+      setTimeout(() => {
+        navigate('/feed');
+      }, 1000); // espera 1s para que vea el mensaje
     } catch (err) {
       setError(err.message);
     } finally {
